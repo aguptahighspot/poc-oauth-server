@@ -1,5 +1,7 @@
-package com.highspot.authgateway.UserRepository;
+package com.highspot.authgateway.service;
 
+import com.highspot.authgateway.dao.OAuthUsers;
+import com.highspot.authgateway.Repository.UserRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
@@ -19,11 +21,11 @@ public class CustomUserDetailService implements UserDetailsService {
 
     @Override
     public UserDetails loadUserByUsername(String clientId) throws UsernameNotFoundException {
-//        OAuthUsers user = new OAuthUsers();
-//        user.setClientSecret("password");
-//        user.setClientId("user");
-//        user.setRoles(new ArrayList<>(Arrays.asList("USER", "ADMIN")));
-//        OAuthUsers uu = userRepository.save(user);
+        OAuthUsers user = new OAuthUsers();
+        user.setClientSecret("password");
+        user.setClientId("userroleonly");
+        user.setRoles(new ArrayList<>(Arrays.asList("USER")));
+        OAuthUsers uu = userRepository.save(user);
 
         OAuthUsers oauth2User = userRepository.findByClientId(clientId);
         if(oauth2User != null) {
@@ -36,16 +38,4 @@ public class CustomUserDetailService implements UserDetailsService {
             throw new UsernameNotFoundException("username not found");
         }
     }
-
-//    public OAuthUsers findUserByClientId(String clientId) {
-//        return userRepository.findByClientId(clientId);
-//    }
-//
-//    public void saveUser(OAuthUsers user) {
-//        user.setClientSecret(user.getClientSecret());
-//        user.setEnabled(true);
-//
-//        user.setRoles(new HashSet<String>(Arrays.asList("ADMIN", "USER")));
-//        userRepository.save(user);
-//    }
 }
